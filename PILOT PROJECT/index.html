@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POPUP STORE</title>
+<style>
+:root{
+  --accent: #0B1226;      /* 런던 밤하늘 -> 헤더/굿즈 배경 */
+  --accent-2: #121C38;    /* 섹션/카드 배경 -> INFORMATION 배경 */
+  --accent-3: #1A2748;    /* 메뉴, 카드, 패널 */
+  --accent-4: #303544;
+  --accent-z: #F5F3EA;    /* 달빛 같은 흰색 */
+  --dark: #3B281F;        /* 텍스트 */
+  --bright: #E0B96A;        /* 텍스트 */
+  --line: #D8D2CC;
+  --brown: #76502F;
+  --gray: #B8C0D2;        /* 플레이스홀더 박스 */
+  --footer-bg: #EEF2F3;
+  --header-h: 78px;
+  --max: 1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* 앵커 이동 시 부드럽게 스크롤 + 고정 헤더 높이만큼 여유 */
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:var(--header-h);
+}
+/* 모션 최소화 설정을 켠 사용자에게는 즉시 이동 */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+
+body{
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color:var(--dark); line-height:1.6;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.inner{max-width:var(--max);margin:0 auto;padding:0 20px}
+
+/* 공통 섹션 */
+.sec{padding:64px 0}
+.sec-title{text-align:center;margin-bottom:40px}
+.sec-title h2{font-size:28px;letter-spacing:.08em;color:var(--accent-z)}
+.sec-title span{font-size:13px;opacity:.7;color:var(--accent-z)}
+
+/* 1. 헤더 */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:var(--header-h);
+  background:transparent;color:#fff;display:flex;align-items:center;
+  transition:background-color .3s ease,color .3s ease,box-shadow .3s ease;
+}
+/* 배너를 벗어날 만큼 스크롤되면 불투명하게 전환 */
+.header.scrolled{
+  background:var(--accent-2);
+}
+.header .inner{display:flex;align-items:center;gap:24px;width:100%}
+.logo{display:flex;align-items:center}
+.logo img{height:64px;width:auto;display:block}
+.logo:hover{opacity:.6}
+.gnb{display:flex;gap:22px;margin-left:auto;font-size:16px;font-weight:700;letter-spacing:.05em}
+.gnb a:hover{opacity:.6}
+.btn-reserve{
+  background:var(--dark);color:#fff;padding:10px 20px;border-radius:999px;
+  font-size:13px;font-weight:700;
+}
+.btn-menu{
+  width:38px;height:38px;border:1px solid var(--dark);background:transparent;
+  border-radius:6px;cursor:pointer;display:none;font-size:16px;
+}
+
+/* 2. 메인 배너 */
+.hero{
+  position:relative;
+  height:100vh;
+  height:100svh;               /* 모바일 주소창 대응 (미지원 브라우저는 위 100vh로 폴백) */
+  background:#2B2F3A url("banner.png") center/cover no-repeat;
+  color:#fff;
+}
+/* 배너 위 텍스트 가독성용 그라데이션 */
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 45%);
+}
+.hero .caption{
+  position:absolute;left:0;bottom:24px;padding:0 24px;z-index:1;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.hero .date{font-size:clamp(28px,5vw,52px);font-weight:800;letter-spacing:.02em}
+.hero .place{font-size:clamp(14px,2vw,20px);font-weight:600}
+
+/* 3. INFORMATION */
+.information{background:var(--accent-2);position:relative;z-index:0;overflow:hidden}
+.information .inner{position:relative;z-index:1}
+.info-float{
+  position:absolute;width:110px;z-index:0;
+  pointer-events:none;user-select:none;
+  transform-origin:top center;
+  transform:rotate(var(--r,0deg));
+  animation:info-float-bob 7s ease-in-out infinite;
+}
+.info-float.f1{top:5%;left:5%;width:230px;--r:-6deg;animation-duration:7s}
+.info-float.f2{top:8%;right:6%;width:300px;--r:8deg;animation-duration:8.5s;animation-delay:.6s}
+.info-float.f4{top:28%;left:17%;width:160px;--r:5deg;animation-duration:7.5s;animation-delay:.3s}
+.info-float.f5{top:34%;right:15%;width:260px;--r:-7deg;animation-duration:9s;animation-delay:1s}
+.info-float.f7{top:64%;right:19%;width:220px;--r:-5deg;animation-duration:7.2s;animation-delay:1.5s}
+.info-float.f8{bottom:14%;left:21%;width:170px;--r:9deg;animation-duration:8s;animation-delay:.4s}
+.info-float.f10{top:16%;right:27%;width:160px;--r:4deg;animation-duration:7.8s;animation-delay:2s}
+.info-float.f11{bottom:2%;right:9%;width:280px;--r:-6deg;animation-duration:9.5s;animation-delay:.2s}
+.info-float.f12{top:48%;left:4%;width:150px;--r:16deg;animation-duration:8.2s;animation-delay:.8s}
+.info-float.f13{top:60%;left:2%;width:140px;--r:-18deg;animation-duration:7.4s;animation-delay:1.2s}
+.info-float.f14{top:2%;left:40%;width:140px;--r:14deg;animation-duration:8.8s;animation-delay:.5s}
+.info-float.f15{bottom:6%;right:2%;width:150px;--r:-15deg;animation-duration:9.2s;animation-delay:1.8s}
+.info-float.f16{top:44%;right:3%;width:180px;--r:17deg;animation-duration:7.6s;animation-delay:.3s}
+@keyframes info-float-bob{
+  0%,100%{transform:rotate(calc(var(--r,0deg) - 3deg)) translateY(0)}
+  50%{transform:rotate(calc(var(--r,0deg) + 3deg)) translateY(-18px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .info-float{animation:none}
+}
+.info-desc{
+  max-width:1000px;margin:0 auto 32px;text-align:center;
+  font-size:12px;opacity:.8;
+  color: var(--accent-z);
+}
+.info-box{
+  max-width:1280px;margin:0 auto;background:#fff;
+  border:1px solid var(--line);padding:28px 32px;border-radius:8px;
+}
+.info-row{display:flex;gap:24px;padding:12px 0;font-size:14px}
+.info-row + .info-row{border-top:1px dashed var(--line)}
+.info-row dt{width:90px;flex:none;font-weight:700}
+.info-map{max-width:1280px;margin:24px auto 0;border-radius:8px;overflow:hidden}
+.info-map img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+
+/* 4. EVENT */
+.event{background:var(--accent-3)}
+.event-desc{
+  max-width:640px;margin:0 auto 32px;text-align:center;
+  font-size:15px;opacity:.8;
+  color:var(--accent-z);
+}
+.event-image{max-width:1000px;margin:0 auto 32px;border-radius:8px;overflow:hidden}
+.event-image img{width:100%;display:block}
+.event-more{text-align:center}
+.btn-detail{
+  display:inline-block;background:var(--accent-z);color:var(--dark);
+  padding:14px 32px;border-radius:999px;
+  font-size:14px;font-weight:700;letter-spacing:.05em;
+}
+.btn-detail:hover{opacity:.85}
+
+/* 5. CONTENTS */
+.contents{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;           /* 모바일 주소창 대응 (미지원 브라우저는 위 100vh로 폴백) */
+  display:flex;
+  padding:96px 0 72px;
+  background:var(--accent-4) url("contents-bg.png") center/cover no-repeat;
+}
+/* 콘텐츠 타이틀 가독성용 그라데이션 */
+.contents::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 45%);
+}
+/* 하단 안내 텍스트 가독성용 그라데이션 */
+.contents::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.6) 0%,rgba(0,0,0,0) 35%);
+}
+.contents .inner{position:relative;z-index:1;width:100%;display:flex;flex-direction:column}
+.contents-wrap{display:flex;flex-direction:column;flex:1;min-height:0}
+.contents-stage{
+  position:relative;min-height:560px;flex:1;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:56px;
+}
+.stage-empty{
+  height:90%;width:auto;max-width:95%;
+  aspect-ratio:16/9;object-fit:cover;
+  border-radius:12px;
+  box-shadow:0 16px 40px rgba(0,0,0,.35);
+  transition:opacity .25s ease;
+}
+.stage-panel{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  opacity:0;visibility:hidden;
+  transition:opacity .25s ease,visibility .25s ease;
+}
+.stage-panel img{
+  height:78%;width:auto;max-width:95%;
+  aspect-ratio:16/9;object-fit:cover;
+  border-radius:12px;
+  box-shadow:0 16px 40px rgba(0,0,0,.35);
+}
+.stage-panel p{
+  width:90%;max-width:900px;text-align:center;color:var(--accent-z);font-size:15px;
+  background:rgba(0,0,0,.4);padding:10px 22px;border-radius:999px;
+}
+.contents-wrap:has(.spot:hover) .stage-empty,
+.contents-wrap:has(.spot:focus-within) .stage-empty{opacity:0}
+.contents-wrap:has(.spot-1:hover) .stage-1,
+.contents-wrap:has(.spot-1:focus-within) .stage-1,
+.contents-wrap:has(.spot-2:hover) .stage-2,
+.contents-wrap:has(.spot-2:focus-within) .stage-2,
+.contents-wrap:has(.spot-3:hover) .stage-3,
+.contents-wrap:has(.spot-3:focus-within) .stage-3,
+.contents-wrap:has(.spot-4:hover) .stage-4,
+.contents-wrap:has(.spot-4:focus-within) .stage-4{
+  opacity:1;visibility:visible;
+}
+.contents-spots{display:flex;justify-content:center;gap:160px}
+.spot{display:flex;flex-direction:column;align-items:center}
+.spot-circle{
+  width:110px;height:110px;border-radius:50%;
+  background:var(--accent-3);border:2px solid var(--bright);color:var(--accent-z);
+  font-size:20px;font-weight:700;cursor:pointer;
+  transition:transform .2s ease,border-color .2s ease;
+}
+.spot-label{margin-top:14px;font-size:16px;color:var(--bright);font-weight:700;}
+.spot:hover .spot-circle,.spot:focus-within .spot-circle{
+  transform:scale(1.06);border-color:var(--accent-z);
+}
+.contents-guide{
+  margin-top:32px;text-align:center;
+  color:white;opacity:.55;font-size:15px;
+}
+
+/* 6. GOODS */
+.goods{background:var(--brown)}
+.goods-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.card{background:#fff;padding:14px;border-radius:8px;}
+.thumb-carousel{position:relative;margin-bottom:12px}
+.thumb-track{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  aspect-ratio:1/1;border-radius:8px;scrollbar-width:none;
+}
+.thumb-track::-webkit-scrollbar{display:none}
+.thumb-track img,.thumb-track .thumb-placeholder{
+  flex:0 0 100%;width:100%;scroll-snap-align:start;
+  aspect-ratio:1/1;object-fit:cover;
+}
+/* 빈 자리(div) 플레이스홀더용 */
+.thumb-placeholder{
+  background:var(--gray);
+  display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;
+}
+.thumb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:50%;border:none;
+  background:rgba(224,185,106,.75);color:var(--dark);
+  font-size:14px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;z-index:1;
+}
+.thumb-nav.prev{left:8px}
+.thumb-nav.next{right:8px}
+.thumb-dots{
+  position:absolute;bottom:8px;left:0;right:0;
+  display:flex;justify-content:center;gap:6px;
+}
+.thumb-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.25)}
+.thumb-dots .dot.active{background:var(--dark)}
+.card h3{font-size:14px;margin-bottom:4px}
+.card .price{font-size:13px;opacity:.7}
+.goods-extra{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  max-height:0;margin-top:0;opacity:0;overflow:hidden;
+  transition:max-height .5s ease, opacity .4s ease, margin-top .5s ease;
+}
+.goods-extra.expanded{opacity:1;margin-top:20px}
+.goods-more{text-align:center;margin-top:24px}
+.goods-toggle{
+  background:var(--accent-z);color:var(--dark);border:none;
+  padding:10px 28px;border-radius:999px;font-size:13px;cursor:pointer;
+  transition:opacity .2s ease;
+}
+.goods-toggle:hover{opacity:.85}
+
+/* 7. FAQ */
+.faq{background:var(--footer-bg)}
+.faq-wrap{display:flex;gap:40px;align-items:flex-start}
+.faq-head{flex:none;width:180px;text-align:center;padding-top:8px}
+.faq-head h2{font-size:38px;letter-spacing:.05em}
+.faq-head span{font-size:12px;opacity:.7}
+.faq-list{
+  flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+}
+.faq-list a{
+  display:block;background:#fff;border:1px solid var(--line);
+  padding:14px;text-align:center;font-size:14px;
+}
+.faq-list a:hover{background:#fff8fb}
+
+/* 8. NOTICE */
+.notice{background:var(--accent)}
+.notice-list{
+  max-width:720px;margin:0 auto;
+  display:flex;flex-direction:column;gap:10px;
+  font-size:14px;color:var(--accent-z);
+}
+.notice-list li{padding-left:1em;position:relative}
+.notice-list li::before{content:"·";position:absolute;left:0}
+
+/* 9. 푸터 */
+.footer{background:var(--footer-bg);padding:56px 0 32px;font-size:12px}
+.sns{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px}
+.sns .label{font-size:11px;letter-spacing:.1em;opacity:.6}
+.sns .item{width:120px;height:34px;background:var(--gray);
+  display:flex;align-items:center;justify-content:center;color:#888;font-size:11px}
+.footer-bottom{
+  margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;opacity:.7;
+}
+.footer-bottom nav{display:flex;gap:16px}
+
+/* 반응형 */
+@media (max-width:900px){
+  .goods-grid,.goods-extra{grid-template-columns:repeat(2,1fr)}
+  .faq-wrap{flex-direction:column}
+  .faq-head{width:100%}
+  .contents-spots{gap:32px;flex-wrap:wrap}
+  .contents-stage{min-height:420px}
+}
+@media (max-width:640px){
+  .gnb{display:none}
+  .btn-menu{display:block;margin-left:auto}
+  .btn-reserve{display:none}
+  .goods-grid,.goods-extra,.faq-list{grid-template-columns:1fr}
+  .sec{padding:48px 0}
+  .contents-spots{gap:28px 20px}
+  .spot-circle{width:88px;height:88px;font-size:16px}
+  .contents-stage{min-height:320px;margin-bottom:36px}
+  .stage-panel p{font-size:13px;max-width:88%}
+}
+</style>
+</head>
+<body>
+
+<!-- 1. 헤더 -->
+<header class="header">
+  <div class="inner">
+    <a href="#top" class="logo">
+      <img src="logo_w.png" alt="훔쳐라! 괴도 람쥐!">
+    </a>
+    <nav class="gnb">
+      <a href="#information">INFORMATION</a>
+      <a href="#event">EVENT</a>
+      <a href="#contents">CONTENTS</a>
+      <a href="#goods">GOODS</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 2. 메인 배너 -->
+<section class="hero" id="top">
+  <div class="caption">
+    <p class="date">2026.08.29 ~ 2026.08.31</p>
+    <p class="place">서울특별시 강남구 테헤란로 217 오렌지플래닛 · 10:30 ~ 22:00</p>
+  </div>
+</section>
+
+<!-- 3. INFORMATION -->
+<section class="sec information" id="information">
+  <img class="info-float f1" src="float1.png" alt="">
+  <img class="info-float f2" src="float2.png" alt="">
+  <img class="info-float f4" src="float1.png" alt="">
+  <img class="info-float f5" src="float2.png" alt="">
+  <img class="info-float f7" src="float1.png" alt="">
+  <img class="info-float f8" src="float2.png" alt="">
+  <img class="info-float f10" src="float1.png" alt="">
+  <img class="info-float f11" src="float2.png" alt="">
+  <img class="info-float f12" src="float3.png" alt="">
+  <img class="info-float f13" src="float3.png" alt="">
+  <img class="info-float f14" src="float3.png" alt="">
+  <img class="info-float f15" src="float3.png" alt="">
+  <img class="info-float f16" src="float3.png" alt="">
+  <div class="inner">
+    <div class="sec-title">
+      <h2>INFORMATION</h2>
+      <span>정보</span>
+    </div>
+    <p class="info-desc">강남에 괴도 람쥐가 나타났다!<br> 이번에는 우징이의 소중한 운석을 훔쳐 달아난 괴도 람쥐. <br> 명탐정 사과와 우징이가 괴도 람쥐의 흔적을 따라 강남에 찾아왔어요. <br> &lt;훔쳐라! 괴도 람쥐!&gt; 팝업스토어에 방문해 사건 해결을 도와주세요! <br> 다양한 이벤트와 특별한 굿즈도 만나볼 수 있습니다. </p>
+    <dl class="info-box">
+      <div class="info-row"><dt>장소</dt><dd>서울특별시 강남구 테헤란로 217 오렌지플래닛 <a href="#">지도 보기</a></dd></div>
+      <div class="info-row"><dt>기간</dt><dd>2026년 8월 29일(토)</dd></div>
+      <div class="info-row"><dt>운영시간</dt><dd>13:00 ~ 17:00 <br>※ 운영 시간은 변경될 수 있습니다.</dd></div>
+    </dl>
+    <div class="info-map">
+      <img src="route.png" alt="오시는 길">
+    </div>
+  </div>
+</section>
+
+<!-- 4. EVENT -->
+<section class="sec event" id="event">
+  <div class="inner">
+    <div class="sec-title">
+      <h2>EVENT</h2>
+      <span>이벤트</span>
+    </div>
+    <!-- <p class="event-desc">스탬프 투어를 완료하고 럭키드로우에 도전해 보세요. <br> &lt;훔쳐라! 괴도 람쥐!&gt;의 다양한 굿즈가 경품으로 준비되어 있습니다.</p> -->
+    <div class="event-image">
+      <img src="event.png" alt="이벤트 안내">
+    </div>
+    <div class="event-more">
+      <a href="#" class="btn-detail">자세히 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5. CONTENTS -->
+<section class="sec contents" id="contents">
+  <div class="inner">
+    <div class="sec-title">
+      <h2>CONTENTS</h2>
+      <span>콘텐츠</span>
+    </div>
+    <div class="contents-wrap">
+      <div class="contents-stage">
+        <img class="stage-empty" src="contents-guide.png" alt="">
+        <div class="stage-panel stage-1">
+          <img src="contents1.webp" alt="콘텐츠 01 현장 이미지">
+          <p>팝업스토어에서만 만나볼 수 있는 스페셜 스테이지를 직접 플레이해보세요. <br>런던의 거리를 배경으로, 우징이의 소중한 운석을 훔쳐 달아나는 괴도 람쥐의 이야기가 펼쳐집니다.</p>
+        </div>
+        <div class="stage-panel stage-2">
+          <img src="contents2.webp" alt="콘텐츠 02 현장 이미지">
+          <p>괴도 람쥐를 잡기 위한 다양한 미션에 도전해 보세요! <br>사건 현장의 단서를 찾고 돋보기를 던져 도주 중인 괴도 람쥐를 검거하며 사건을 해결할 수 있어요.</p>
+        </div>
+        <div class="stage-panel stage-3">
+          <img src="contents3.webp" alt="콘텐츠 03 현장 이미지">
+          <p>드디어 괴도 람쥐 검거 성공! <br>사건 해결을 기념해  &lt;훔쳐라! 괴도 람쥐!&gt;의 캐릭터들과 함께 사건 특별한 순간을 사진으로 남겨보세요.</p>
+        </div>
+        <div class="stage-panel stage-4">
+          <img src="contents3.webp" alt="콘텐츠 04 현장 이미지">
+          <p> &lt;훔쳐라! 괴도 람쥐!&gt;의 다양한 공식 굿즈를 만나볼 수 있습니다. <br>포토카드, 아크릴 스탠드, 키링, 인형 등 다양한 상품을 직접 확인해 보세요.</p>
+        </div>
+      </div>
+      <div class="contents-spots">
+        <div class="spot spot-1">
+          <button type="button" class="spot-circle">01</button>
+          <p class="spot-label">GAME ZONE</p>
+        </div>
+        <div class="spot spot-2">
+          <button type="button" class="spot-circle">02</button>
+          <p class="spot-label">MISSION ZONE</p>
+        </div>
+        <div class="spot spot-3">
+          <button type="button" class="spot-circle">03</button>
+          <p class="spot-label">PHOTO ZONE</p>
+        </div>
+        <div class="spot spot-4">
+          <button type="button" class="spot-circle">04</button>
+          <p class="spot-label">GOODS SHOP</p>
+        </div>
+      </div>
+      <p class="contents-guide">원에 마우스를 올려 콘텐츠를 확인해보세요</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. GOODS -->
+<section class="sec goods" id="goods">
+  <div class="inner">
+    <div class="sec-title">
+      <h2>GOODS</h2>
+      <span>상품</span>
+    </div>
+    <div class="goods-grid"></div>
+    <div class="goods-extra"></div>
+    <div class="goods-more"><button class="goods-toggle" type="button">더보기</button></div>
+  </div>
+</section>
+
+<!-- 7. FAQ -->
+<section class="sec faq" id="faq">
+  <div class="inner faq-wrap">
+    <div class="faq-head">
+      <h2>FAQ</h2>
+      <span>자주 묻는 질문</span>
+    </div>
+    <div class="faq-list">
+      <a href="#">질문 항목 01</a>
+      <a href="#">질문 항목 02</a>
+      <a href="#">질문 항목 03</a>
+      <a href="#">질문 항목 04</a>
+      <a href="#">질문 항목 05</a>
+      <a href="#">질문 항목 06</a>
+    </div>
+  </div>
+</section>
+
+<!-- 8. NOTICE -->
+<section class="sec notice" id="notice">
+  <div class="inner">
+    <div class="sec-title">
+      <h2>NOTICE</h2>
+      <span>유의사항</span>
+    </div>
+    <ul class="notice-list">
+      <li>유의사항 항목 01</li>
+      <li>유의사항 항목 02</li>
+      <li>유의사항 항목 03</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 9. 푸터 -->
+<footer class="footer">
+  <div class="inner">
+    <div class="sns">
+      <span class="label">FOLLOW US</span>
+      <span class="item">SNS 01</span>
+      <span class="item">SNS 02</span>
+    </div>
+    <div class="sns">
+      <span class="label">AND MORE</span>
+      <span class="item">링크 01</span>
+      <span class="item">링크 02</span>
+    </div>
+    <div class="footer-bottom">
+      <nav><a href="#">CONTACT</a><a href="#">PRIVACY POLICY</a></nav>
+      <span>© 0000 텍스트</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var header = document.querySelector('.header');
+  var hero = document.querySelector('.hero');
+  var ticking = false;
+
+  function updateHeader(){
+    var threshold = hero.offsetHeight - header.offsetHeight;
+    if(window.scrollY >= threshold){
+      header.classList.add('scrolled');
+    }else{
+      header.classList.remove('scrolled');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(updateHeader);
+      ticking = true;
+    }
+  });
+
+  updateHeader();
+})();
+
+(function(){
+  var goodsData = [
+    {name:'아크릴 스탠드(괴도 람쥐/명탐정 사과/우징이)', price:'₩ 12,000', images:['goods/acryl_idle.png','goods/acryl_real.png']},
+    {name:'아크릴 스탠드(명탐정 사과)', price:'₩ 12,000', images:['goods/acryl-apple.png','goods/acryl-apple-2.png']},
+    {name:'아크릴 스탠드(우징이)', price:'₩ 12,000', images:['goods/acryl-ujing.png','goods/acryl-ujing-2.png']},
+    {name:'상품명 04', price:'₩ 00,000', images:[null, null]},
+    {name:'상품명 05', price:'₩ 00,000', images:[null, null]},
+    {name:'상품명 06', price:'₩ 00,000', images:[null, null]},
+    {name:'상품명 07', price:'₩ 00,000', images:[null, null]},
+    {name:'상품명 08', price:'₩ 00,000', images:[null, null]},
+    {name:'상품명 09', price:'₩ 00,000', images:[null, null]}
+  ];
+  var VISIBLE_COUNT = 6;
+
+  function renderThumb(src, name, i){
+    return src
+      ? '<img src="' + src + '" alt="' + name + ' 이미지 ' + (i + 1) + '">'
+      : '<div class="thumb-placeholder">이미지 ' + (i + 1) + '</div>';
+  }
+
+  function renderCard(item){
+    var thumbs = item.images.map(function(src, i){ return renderThumb(src, item.name, i); }).join('');
+    var dots = item.images.map(function(_, i){ return '<span class="dot' + (i === 0 ? ' active' : '') + '"></span>'; }).join('');
+    return '<div class="card">' +
+      '<div class="thumb-carousel">' +
+        '<button class="thumb-nav prev" aria-label="이전 이미지">‹</button>' +
+        '<div class="thumb-track">' + thumbs + '</div>' +
+        '<button class="thumb-nav next" aria-label="다음 이미지">›</button>' +
+        '<div class="thumb-dots">' + dots + '</div>' +
+      '</div>' +
+      '<h3>' + item.name + '</h3><p class="price">' + item.price + '</p>' +
+    '</div>';
+  }
+
+  var grid = document.querySelector('.goods-grid');
+  var extra = document.querySelector('.goods-extra');
+  grid.innerHTML = goodsData.slice(0, VISIBLE_COUNT).map(renderCard).join('');
+  extra.innerHTML = goodsData.slice(VISIBLE_COUNT).map(renderCard).join('');
+
+  var toggleWrap = document.querySelector('.goods-more');
+  var toggleBtn = document.querySelector('.goods-toggle');
+
+  if(goodsData.length > VISIBLE_COUNT){
+    var expanded = false;
+
+    extra.addEventListener('transitionend', function(e){
+      if(e.propertyName === 'max-height' && expanded){
+        extra.style.maxHeight = 'none';
+      }
+    });
+
+    toggleBtn.addEventListener('click', function(){
+      expanded = !expanded;
+      if(expanded){
+        extra.style.maxHeight = extra.scrollHeight + 'px';
+        extra.classList.add('expanded');
+      }else{
+        extra.style.maxHeight = extra.scrollHeight + 'px';
+        void extra.offsetHeight;
+        extra.classList.remove('expanded');
+        extra.style.maxHeight = '0px';
+      }
+      toggleBtn.textContent = expanded ? '숨기기' : '더보기';
+    });
+  }else{
+    toggleWrap.style.display = 'none';
+  }
+})();
+
+(function(){
+  document.querySelectorAll('.thumb-carousel').forEach(function(carousel){
+    var track = carousel.querySelector('.thumb-track');
+    var dots = carousel.querySelectorAll('.dot');
+    var scrollTimer = null;
+
+    function updateDots(){
+      var index = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach(function(dot, i){
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    carousel.querySelector('.prev').addEventListener('click', function(){
+      track.scrollBy({left: -track.clientWidth, behavior: 'smooth'});
+    });
+    carousel.querySelector('.next').addEventListener('click', function(){
+      track.scrollBy({left: track.clientWidth, behavior: 'smooth'});
+    });
+    track.addEventListener('scroll', function(){
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(updateDots, 80);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

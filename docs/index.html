@@ -133,6 +133,11 @@ a{color:inherit;text-decoration:none}
 .info-row{display:flex;gap:24px;padding:12px 0;font-size:14px}
 .info-row + .info-row{border-top:1px dashed var(--line)}
 .info-row dt{width:90px;flex:none;font-weight:700}
+.info-map-title{
+  max-width:1000px;margin:0 auto 16px;text-align:center;
+  font-size:20px;font-weight:700;
+  color:var(--accent-z);
+}
 .info-map{max-width:1280px;margin:24px auto 0;border-radius:8px;overflow:hidden}
 .info-map img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 
@@ -347,7 +352,7 @@ a{color:inherit;text-decoration:none}
 <header class="header">
   <div class="inner">
     <a href="#top" class="logo">
-      <img src="logo_w.png" alt="훔쳐라! 괴도 람쥐!">
+      <img src="logo.png" alt="훔쳐라! 괴도 람쥐!">
     </a>
     <nav class="gnb">
       <a href="#information">INFORMATION</a>
@@ -394,6 +399,7 @@ a{color:inherit;text-decoration:none}
       <div class="info-row"><dt>운영시간</dt><dd>13:00 ~ 17:00 <br>※ 운영 시간은 변경될 수 있습니다.</dd></div>
     </dl>
     <div class="info-map">
+      <p class="info-map-title">오시는 길</p>
       <img src="route.png" alt="오시는 길">
     </div>
   </div>
@@ -435,11 +441,11 @@ a{color:inherit;text-decoration:none}
           <p>괴도 람쥐를 잡기 위한 다양한 미션에 도전해 보세요! <br>사건 현장의 단서를 찾고 돋보기를 던져 도주 중인 괴도 람쥐를 검거하며 사건을 해결할 수 있어요.</p>
         </div>
         <div class="stage-panel stage-3">
-          <img src="contents3.webp" alt="콘텐츠 03 현장 이미지">
+          <img src="contents3.png" alt="콘텐츠 03 현장 이미지">
           <p>드디어 괴도 람쥐 검거 성공! <br>사건 해결을 기념해  &lt;훔쳐라! 괴도 람쥐!&gt;의 캐릭터들과 함께 사건 특별한 순간을 사진으로 남겨보세요.</p>
         </div>
         <div class="stage-panel stage-4">
-          <img src="contents3.webp" alt="콘텐츠 04 현장 이미지">
+          <img src="contents4.png" alt="콘텐츠 04 현장 이미지">
           <p> &lt;훔쳐라! 괴도 람쥐!&gt;의 다양한 공식 굿즈를 만나볼 수 있습니다. <br>포토카드, 아크릴 스탠드, 키링, 인형 등 다양한 상품을 직접 확인해 보세요.</p>
         </div>
       </div>
@@ -560,15 +566,15 @@ a{color:inherit;text-decoration:none}
 
 (function(){
   var goodsData = [
-    {name:'아크릴 스탠드(괴도 람쥐/명탐정 사과/우징이)', price:'₩ 12,000', images:['goods/acryl_idle.png','goods/acryl_real.png']},
-    {name:'아크릴 스탠드(명탐정 사과)', price:'₩ 12,000', images:['goods/acryl-apple.png','goods/acryl-apple-2.png']},
-    {name:'아크릴 스탠드(우징이)', price:'₩ 12,000', images:['goods/acryl-ujing.png','goods/acryl-ujing-2.png']},
-    {name:'상품명 04', price:'₩ 00,000', images:[null, null]},
-    {name:'상품명 05', price:'₩ 00,000', images:[null, null]},
-    {name:'상품명 06', price:'₩ 00,000', images:[null, null]},
-    {name:'상품명 07', price:'₩ 00,000', images:[null, null]},
-    {name:'상품명 08', price:'₩ 00,000', images:[null, null]},
-    {name:'상품명 09', price:'₩ 00,000', images:[null, null]}
+    {name:'랜덤 포토카드', price:'₩ 12,000', images:['goods/photocardA.png','goods/photocardB.png','goods/photocardC.png','goods/photocard_real.png']},
+    {name:'스티커 세트', price:'₩ 12,000', images:['goods/stickerA.png','goods/stickerB.png','goods/stickerC.png','goods/sticker_real.png']},
+    {name:'아크릴 키링', price:'₩ 12,000', images:['goods/acryl_keyringA.png','goods/acryl_keyringB.png','goods/acryl_keyringC.png','goods/acryl_keyring_real.png']},
+    {name:'그립톡', price:'₩ 00,000', images:['goods/gripA.png','goods/gripB.png','goods/gripC.png','goods/grip_real.png']},
+    {name:'후드 집업', price:'₩ 00,000', images:['goods/hoodie.png','goods/hoodie_real.png']},
+    {name:'인형', price:'₩ 00,000', images:['goods/dollA.png','goods/dollB.png','goods/dollC.png','goods/doll_real.png']},
+    {name:'마우스 패드', price:'₩ 00,000', images:['goods/mousepadA.png','goods/mousepadB.png','goods/mousepadC.png','goods/mousepad_real.png']},
+    {name:'아크릴 스탠드', price:'₩ 00,000', images:['goods/acryl_standA.png', 'goods/acryl_standB.png', 'goods/acryl_standC.png', 'goods/acryl_stand_real.png']},
+    {name:'키캡 키링', price:'₩ 00,000', images:['goods/keycapA.png','goods/keycapB.png','goods/keycapC.png','goods/keycap_real.png']}
   ];
   var VISIBLE_COUNT = 6;
 

@@ -16,7 +16,7 @@
   --line: #D8D2CC;
   --brown: #76502F;
   --gray: #B8C0D2;        /* 플레이스홀더 박스 */
-  --footer-bg: #EEF2F3;
+  --footer-bg: #293538;
   --header-h: 78px;
   --max: 1080px;
 }
@@ -92,34 +92,10 @@ a{color:inherit;text-decoration:none}
 .hero .place{font-size:clamp(14px,2vw,20px);font-weight:600}
 
 /* 3. INFORMATION */
-.information{background:var(--accent-2);position:relative;z-index:0;overflow:hidden}
+.information{background:var(--accent-2) url("information_bg.png") center/cover no-repeat;position:relative;z-index:0}
 .information .inner{position:relative;z-index:1}
-.info-float{
-  position:absolute;width:110px;z-index:0;
-  pointer-events:none;user-select:none;
-  transform-origin:top center;
-  transform:rotate(var(--r,0deg));
-  animation:info-float-bob 7s ease-in-out infinite;
-}
-.info-float.f1{top:5%;left:5%;width:230px;--r:-6deg;animation-duration:7s}
-.info-float.f2{top:8%;right:6%;width:300px;--r:8deg;animation-duration:8.5s;animation-delay:.6s}
-.info-float.f4{top:28%;left:17%;width:160px;--r:5deg;animation-duration:7.5s;animation-delay:.3s}
-.info-float.f5{top:34%;right:15%;width:260px;--r:-7deg;animation-duration:9s;animation-delay:1s}
-.info-float.f7{top:64%;right:19%;width:220px;--r:-5deg;animation-duration:7.2s;animation-delay:1.5s}
-.info-float.f8{bottom:14%;left:21%;width:170px;--r:9deg;animation-duration:8s;animation-delay:.4s}
-.info-float.f10{top:16%;right:27%;width:160px;--r:4deg;animation-duration:7.8s;animation-delay:2s}
-.info-float.f11{bottom:2%;right:9%;width:280px;--r:-6deg;animation-duration:9.5s;animation-delay:.2s}
-.info-float.f12{top:48%;left:4%;width:150px;--r:16deg;animation-duration:8.2s;animation-delay:.8s}
-.info-float.f13{top:60%;left:2%;width:140px;--r:-18deg;animation-duration:7.4s;animation-delay:1.2s}
-.info-float.f14{top:2%;left:40%;width:140px;--r:14deg;animation-duration:8.8s;animation-delay:.5s}
-.info-float.f15{bottom:6%;right:2%;width:150px;--r:-15deg;animation-duration:9.2s;animation-delay:1.8s}
-.info-float.f16{top:44%;right:3%;width:180px;--r:17deg;animation-duration:7.6s;animation-delay:.3s}
-@keyframes info-float-bob{
-  0%,100%{transform:rotate(calc(var(--r,0deg) - 3deg)) translateY(0)}
-  50%{transform:rotate(calc(var(--r,0deg) + 3deg)) translateY(-18px)}
-}
 @media (prefers-reduced-motion:reduce){
-  .info-float{animation:none}
+  .event-float{animation:none}
 }
 .info-desc{
   max-width:1000px;margin:0 auto 32px;text-align:center;
@@ -142,20 +118,37 @@ a{color:inherit;text-decoration:none}
 .info-map img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 
 /* 4. EVENT */
-.event{background:var(--accent-3)}
+.event{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;           /* 모바일 주소창 대응 (미지원 브라우저는 위 100vh로 폴백) */
+  display:flex;
+  overflow:hidden;
+  background:var(--accent-3) url("event_bg.png") center/cover no-repeat;
+}
+.event .inner{
+  width:100%;max-width:1600px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.event-float{
+  position:absolute;left:4%;bottom:6%;width:560px;z-index:0;
+  pointer-events:none;user-select:none;
+  animation:event-float-bob 7s ease-in-out infinite;
+}
+@keyframes event-float-bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
 .event-desc{
   max-width:640px;margin:0 auto 32px;text-align:center;
   font-size:15px;opacity:.8;
   color:var(--accent-z);
 }
-.event-image{max-width:1000px;margin:0 auto 32px;border-radius:8px;overflow:hidden}
-.event-image img{width:100%;display:block}
+.event-image{max-width:1800px;margin:0 auto;text-align:center}
+.event-image img{width:100%;display:inline-block;border-radius:8px}
 .event-more{text-align:center}
-.btn-detail{
-  display:inline-block;background:var(--accent-z);color:var(--dark);
-  padding:14px 32px;border-radius:999px;
-  font-size:14px;font-weight:700;letter-spacing:.05em;
-}
+.btn-detail{display:inline-block}
+.btn-detail img{width:220px;max-width:60vw}
 .btn-detail:hover{opacity:.85}
 
 /* 5. CONTENTS */
@@ -197,12 +190,19 @@ a{color:inherit;text-decoration:none}
   opacity:0;visibility:hidden;
   transition:opacity .25s ease,visibility .25s ease;
 }
-.stage-panel img{
+.stage-images{
+  position:relative;
   height:78%;width:auto;max-width:95%;
-  aspect-ratio:16/9;object-fit:cover;
+  aspect-ratio:16/9;
+}
+.stage-images img{
+  position:absolute;inset:0;
+  height:100%;width:100%;object-fit:cover;
   border-radius:12px;
   box-shadow:0 16px 40px rgba(0,0,0,.35);
+  opacity:0;transition:opacity .5s ease;
 }
+.stage-images img.active{opacity:1}
 .stage-panel p{
   width:90%;max-width:900px;text-align:center;color:var(--accent-z);font-size:15px;
   background:rgba(0,0,0,.4);padding:10px 22px;border-radius:999px;
@@ -374,19 +374,6 @@ a{color:inherit;text-decoration:none}
 
 <!-- 3. INFORMATION -->
 <section class="sec information" id="information">
-  <img class="info-float f1" src="float1.png" alt="">
-  <img class="info-float f2" src="float2.png" alt="">
-  <img class="info-float f4" src="float1.png" alt="">
-  <img class="info-float f5" src="float2.png" alt="">
-  <img class="info-float f7" src="float1.png" alt="">
-  <img class="info-float f8" src="float2.png" alt="">
-  <img class="info-float f10" src="float1.png" alt="">
-  <img class="info-float f11" src="float2.png" alt="">
-  <img class="info-float f12" src="float3.png" alt="">
-  <img class="info-float f13" src="float3.png" alt="">
-  <img class="info-float f14" src="float3.png" alt="">
-  <img class="info-float f15" src="float3.png" alt="">
-  <img class="info-float f16" src="float3.png" alt="">
   <div class="inner">
     <div class="sec-title">
       <h2>INFORMATION</h2>
@@ -407,6 +394,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- 4. EVENT -->
 <section class="sec event" id="event">
+  <img class="event-float" src="magnifier.png" alt="">
   <div class="inner">
     <div class="sec-title">
       <h2>EVENT</h2>
@@ -414,10 +402,10 @@ a{color:inherit;text-decoration:none}
     </div>
     <!-- <p class="event-desc">스탬프 투어를 완료하고 럭키드로우에 도전해 보세요. <br> &lt;훔쳐라! 괴도 람쥐!&gt;의 다양한 굿즈가 경품으로 준비되어 있습니다.</p> -->
     <div class="event-image">
-      <img src="event.png" alt="이벤트 안내">
+      <img src="stamp_mission.png" alt="이벤트 안내">
     </div>
     <div class="event-more">
-      <a href="#" class="btn-detail">자세히 보기</a>
+      <a href="#" class="btn-detail"><img src="move_event.png" alt="자세히 보기"></a>
     </div>
   </div>
 </section>
@@ -433,19 +421,19 @@ a{color:inherit;text-decoration:none}
       <div class="contents-stage">
         <img class="stage-empty" src="contents-guide.png" alt="">
         <div class="stage-panel stage-1">
-          <img src="contents1.webp" alt="콘텐츠 01 현장 이미지">
+          <div class="stage-images"></div>
           <p>팝업스토어에서만 만나볼 수 있는 스페셜 스테이지를 직접 플레이해보세요. <br>런던의 거리를 배경으로, 우징이의 소중한 운석을 훔쳐 달아나는 괴도 람쥐의 이야기가 펼쳐집니다.</p>
         </div>
         <div class="stage-panel stage-2">
-          <img src="contents2.webp" alt="콘텐츠 02 현장 이미지">
+          <div class="stage-images"></div>
           <p>괴도 람쥐를 잡기 위한 다양한 미션에 도전해 보세요! <br>사건 현장의 단서를 찾고 돋보기를 던져 도주 중인 괴도 람쥐를 검거하며 사건을 해결할 수 있어요.</p>
         </div>
         <div class="stage-panel stage-3">
-          <img src="contents3.png" alt="콘텐츠 03 현장 이미지">
+          <div class="stage-images"></div>
           <p>드디어 괴도 람쥐 검거 성공! <br>사건 해결을 기념해  &lt;훔쳐라! 괴도 람쥐!&gt;의 캐릭터들과 함께 사건 특별한 순간을 사진으로 남겨보세요.</p>
         </div>
         <div class="stage-panel stage-4">
-          <img src="contents4.png" alt="콘텐츠 04 현장 이미지">
+          <div class="stage-images"></div>
           <p> &lt;훔쳐라! 괴도 람쥐!&gt;의 다양한 공식 굿즈를 만나볼 수 있습니다. <br>포토카드, 아크릴 스탠드, 키링, 인형 등 다양한 상품을 직접 확인해 보세요.</p>
         </div>
       </div>
@@ -562,6 +550,57 @@ a{color:inherit;text-decoration:none}
   });
 
   updateHeader();
+})();
+
+(function(){
+  var AUTO_INTERVAL = 2500; // 호버 중 이미지 자동 전환 주기(ms)
+  var stageData = {
+    1: {alt:'콘텐츠 01 현장 이미지', images:['contents1.webp']},
+    2: {alt:'콘텐츠 02 현장 이미지', images:['contents2.webp']},
+    3: {alt:'콘텐츠 03 현장 이미지', images:['contents3-1.png', 'contents3-2.png']},
+    4: {alt:'콘텐츠 04 현장 이미지', images:['contents4.png']}
+  };
+
+  Object.keys(stageData).forEach(function(num){
+    var data = stageData[num];
+    var container = document.querySelector('.stage-' + num + ' .stage-images');
+    if(!container) return;
+    container.innerHTML = data.images.map(function(src, i){
+      return '<img src="' + src + '" alt="' + data.alt + '"' + (i === 0 ? ' class="active"' : '') + '>';
+    }).join('');
+  });
+
+  document.querySelectorAll('.contents-spots .spot').forEach(function(spot){
+    var match = spot.className.match(/spot-(\d+)/);
+    if(!match) return;
+    var images = document.querySelectorAll('.stage-' + match[1] + ' .stage-images img');
+    if(images.length < 2) return; // 이미지가 1장뿐이면 자동전환 불필요
+
+    var current = 0;
+    var timer = null;
+
+    function show(next){
+      images[current].classList.remove('active');
+      current = next;
+      images[current].classList.add('active');
+    }
+    function start(){
+      if(timer) return;
+      timer = setInterval(function(){
+        show((current + 1) % images.length);
+      }, AUTO_INTERVAL);
+    }
+    function stop(){
+      clearInterval(timer);
+      timer = null;
+      if(current !== 0) show(0);
+    }
+
+    spot.addEventListener('mouseenter', start);
+    spot.addEventListener('mouseleave', stop);
+    spot.addEventListener('focusin', start);
+    spot.addEventListener('focusout', stop);
+  });
 })();
 
 (function(){
